@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { View, Text, TextInput, Pressable, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import { theme } from '../../lib/theme';
 import { writeTicketData } from '../../scripts/script.js';
 
 export default function NewTicketScreen() {
+  const navigation = useNavigation();
   const [category, setCategory] = useState('');
   const [subject, setSubject] = useState('');
   const [issue, setIssue] = useState('');
@@ -23,10 +26,9 @@ export default function NewTicketScreen() {
       return;
     }
 
-    const ticketId = Date.now().toString(); // unique ID based on timestamp
+    const ticketId = Date.now().toString();
     writeTicketData(ticketId, category, subject, issue);
 
-    // Reset form after submission
     setCategory('');
     setSubject('');
     setIssue('');
@@ -35,13 +37,22 @@ export default function NewTicketScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
+      {/* Back Button */}
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={styles.backButton}
+      >
+        <MaterialCommunityIcons
+          name="chevron-left"
+          size={28}
+          color={theme.colors.textPrimary}
+        />
+      </TouchableOpacity>
+
       <Text style={styles.headerTitle}>New Ticket</Text>
 
-      {/* Category Label */}
       <Text style={styles.label}>Category</Text>
 
-      {/* Dropdown Button */}
       <Pressable
         style={styles.dropdown}
         onPress={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -50,7 +61,6 @@ export default function NewTicketScreen() {
         <Text style={styles.dropdownIcon}>⌵</Text>
       </Pressable>
 
-      {/* Dropdown Menu */}
       {isDropdownOpen && (
         <View style={styles.dropdownMenu}>
           {categories.map((item, index) => (
@@ -68,7 +78,6 @@ export default function NewTicketScreen() {
         </View>
       )}
 
-      {/* Subject */}
       <Text style={styles.label}>Subject</Text>
       <TextInput
         style={styles.input}
@@ -78,7 +87,6 @@ export default function NewTicketScreen() {
         onChangeText={setSubject}
       />
 
-      {/* Issue Description */}
       <Text style={styles.label}>Describe Your Issue</Text>
       <TextInput
         style={styles.textArea}
@@ -89,7 +97,6 @@ export default function NewTicketScreen() {
         multiline
       />
 
-      {/* Submit Button */}
       <Pressable style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit Ticket</Text>
       </Pressable>
@@ -102,6 +109,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.background,
     padding: theme.layout.spacing.large,
+
+    // FIX: Prevent overlap
+    paddingTop: 60,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    padding: 10,
   },
   headerTitle: {
     ...theme.typography.title,
@@ -193,4 +209,3 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
-  

@@ -61,8 +61,8 @@ export default function ProfileScreen() {
                 color={theme.colors.primary}
               />
             </View>
-            <Text style={styles.userName}>Alex Mitchell</Text>
-            <Text style={styles.userEmail}>alex.mitchell@email.com</Text>
+            <Text style={styles.userName}>Ronnie James Dio</Text>
+            <Text style={styles.userEmail}>idonteatbats@email.com</Text>
             <TouchableOpacity style={styles.editProfileButton}>
               <Text style={styles.editProfileText}>Edit Profile</Text>
             </TouchableOpacity>

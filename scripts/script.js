@@ -38,3 +38,27 @@ export function writeTicketData(ticketId, category, subject, description) {
     console.error("Error writing ticket:", error);
   });
 }
+
+/**
+ * Writes a new document to Firebase Database
+ * @param {string} documentId - Unique document ID
+ * @param {string} name - Document name
+ * @param {string} imageUrl - URL of uploaded document image
+ * @param {number} expirationDate - Expiration timestamp
+ * @param {number} reminderDate - Reminder timestamp
+ */
+export function writeDocumentData(documentId, name, imageUrl, expirationDate, reminderDate) {
+  const docRef = ref(db, 'documents/' + documentId);
+  set(docRef, {
+    name,
+    imageUrl,
+    expirationDate,
+    reminderDate
+  })
+  .then(() => {
+    console.log("Document successfully saved!");
+  })
+  .catch((error) => {
+    console.error("Error writing document:", error);
+  });
+}
